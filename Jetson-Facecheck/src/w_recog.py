@@ -13,6 +13,10 @@ from checklist import CheckList
 from mycamera import MyCamera
 from facecheck import FaceCheck
 from w_base import BaseWindow
+import serial
+
+
+ser = serial.Serial('/dev/ttyUSB0' , 9600)
 
 class RecogWindow(BaseWindow):
     def __init__(self, master=None, auto_start=False):
@@ -224,6 +228,8 @@ class RecogWindow(BaseWindow):
                             self._cl.add_to_checked(mc[0])
                             self._listbox_checked.insert(tk.END, mc[0])
                             self._identified_pause_fl = True
+                            string = "Please" + "\r"
+                            ser.write(string.encode())
                             if self._sound_thread != None:
                                 self._sound_thread.start()
                             self.master.after(5000, self._reset_queue)
